@@ -31,25 +31,32 @@ def main_menu():
     print ("\n0. Quit")
     choice = input(" >>  ")
     exec_menu(choice)
- 
     return
  
 def pickle_dump():
     output = open('data.pkl', 'wb')
     pickle.dump(products, output)
+    output1 = open('data1.pkl', 'wb')
+    pickle.dump(orders, output1)
+    output1.close()
     output.close()
     back()
 
 def pickle_load():
+    global products
+    global ln
+    global orders
     pkl_file = open('data.pkl', 'rb')
     data = pickle.load(pkl_file)
+    pkl_file1 = open('data1.pkl', 'rb')
+    data1 = pickle.load(pkl_file1)
+    pkl_file1.close()
     pkl_file.close()
-    products.add(data)
-    print ("9. Back")
-    print ("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
-    return data
+    products = data
+    orders = data1
+    ln = orders.len()
+    exec_menu('9')
+    return 
 
 
 def exec_menu(choice):
@@ -76,7 +83,6 @@ def create_order(product_id, order_id, order_date):
     except Exception:
         print("Product not found!!!")
     
-
 def show_orders():
     print (orders)
     print ("9. Back")
@@ -114,9 +120,7 @@ def menu2():
                      
             else: 
                 ln += 1
-                continue
-
-        
+                continue  
     else:
         print("You aren't admin!!!")
         exec_menu(str(9))
@@ -269,10 +273,6 @@ menu_actions = {
     '22': pickle_load,
 }
 
-
- 
-
 if __name__ == "__main__":
-
     ln = 0
     main_menu()
