@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error!</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .central{
+            text-align:center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="central">
+
+         <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+           <span>This customer already exist! </span></br>
+            <input class="block" type="submit" value="Try again!"/></br>
+
+
+        </form>
+    </div>
+</body>
+</html>
+
+</body>
+</html>

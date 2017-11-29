@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .block1{
+            display: inline-block;
+            text-align:left;
+            margin-right: 50px;
+            float: left;
+        }
+        .block2{
+            display: inline-block;
+            text-align:left;
+            float: left;
+        }
+        .layer {
+            overflow: scroll; /* Добавляем полосы прокрутки */
+            width: 300px; /* Ширина блока */
+            height: 30px; /* Высота блока */
+            padding: 5px; /* Поля вокруг текста */
+            border: solid 1px black; /* Параметры рамки */
+        }
+        .update{
+            position: absolute;
+            right:10px;
+            top:60px;
+        }
+        .dump{
+            position: absolute;
+            right:10px;
+            top:80px;
+        }
+
+
+    </style>
+</head>
+<body>
+          <div style="text-align:center">
+            <h1>You are admin! You can edit/delete/add Games and Stadiums!</h1>
+        </div>
+    <div class="block1">
+    <div>
+
+         <form action="{% url 'admin_add' %}" method="post">
+            {% csrf_token %}
+        <div>
+            <span><h2>Add Game:</h2></span>
+        </div>
+         <span>Enter team1 and team2 names:</span>
+        <input class="block" type="text" name="team1" placeholder="team1" required >
+             <input class="block" type="text" name="team2" placeholder="team2" required ></br>
+        <span>Please, select a valid date:</span>
+        <input class="block" type="datetime-local" name="datetime" placeholder="date-time" required ></br>
+        <span>Please, select a ticket price(20$-120$):</span>
+        <input type="number" size="30" name="price" min='20' max='120' placeholder="70$"  required>
+             </br>
+                <span>Please, select stadium:  </span>
+            <select name="dropdown2">
+                {% for choice in form1.my_choice_field.field.choices %}
+                    <option value = {{ choice.stadium_id }}>
+                            {{ choice.stadium_name }}: {{ choice.adress }}, number:  {{ choice.phone_number}}
+                    </option>
+            {% endfor %}
+            </select></br>
+                <input class="block" type="submit" value="Add!"/></br>
+
+
+        </form>
+    </div>
+    </br>
+     <div>
+            <span><h2>Delete Game:</h2></span>
+        </div>
+    <div>
+        <form action="{% url 'admin_del' %}" method="post">
+            {% csrf_token %}
+         <span>Select game, which you want delete:</span>
+        <select name="dropdown3">
+                {% for choice in form2.my_choice_field.field.choices %}
+                    <option value = {{ choice.game_id }}>
+                            {{ choice.team1_team2 }}: {{ choice.game_data_time }}
+                    </option>
+            {% endfor %}
+            </select></br>
+                <input class="block" type="submit" value="Del!"/></br>
+        </form>
+    <div class="central">
+
+         <form action="{% url 'admin_edit' %}" method="post">
+            {% csrf_token %}
+        <div>
+            <span><h2>Edit Game:</h2></span>
+        </div>
+         <span>Select game, which you want edit:</span>
+        <select name="dropdown4">
+                {% for choice in form2.my_choice_field.field.choices %}
+                    <option value = {{ choice.game_id }}>
+                            {{ choice.team1_team2 }}: {{ choice.game_data_time }}
+                    </option>
+            {% endfor %}
+            </select></br>
+        <span>Please, select a valid date:</span>
+        <input class="block" type="datetime-local" name="datetime" placeholder="date-time" required ></br>
+        <span>Please, select a ticket price(20$-120$):</span>
+        <input type="number" size="30" name="price" min='20' max='120' placeholder="70$"  required>
+             </br>
+                <span>Please, select stadium:  </span>
+            <select name="dropdown5">
+                {% for choice in form1.my_choice_field.field.choices %}
+                    <option value = {{ choice.stadium_id }}>
+                            {{ choice.stadium_name }}: {{ choice.adress }}, number:  {{ choice.phone_number}}
+                    </option>
+            {% endfor %}
+            </select></br>
+                <input class="block" type="submit" value="Edit!"/></br>
+
+
+        </form>
+     </div>
+     </div>
+    </div>
+<div class="block2">
+
+            <h2>VIP customers:</h2>
+
+    <div class="layer">
+         {% for choice in form3.my_choice_field.field.choices %}
+                            {{ choice.name }} {{ choice.surname }}, number:  {{ choice.phone_number}}
+
+            {% endfor %}
+    </div>
+    <form action="{% url 'admin_search_range' %}" method="post">
+            {% csrf_token %}
+        <div>
+        <span><h2>Games for which the price belongs to the range:</h2></span>
+    <div>
+        <span>from:</span>
+          <input class="block" size="3" type="text" name="from" placeholder="20" required >
+        <span>to:</span>
+             <input class="block" size="3" type="text" name="to" placeholder="120" required >
+    </div>
+    <div class="layer">
+            {% for choice in form4 %}
+
+                            {{ choice.team1_team2 }}
+
+            {% endfor %}
+    </div>
+    <input class="block" type="submit" value="Search!"/></br>
+        </div>
+    </form>
+<form action="{% url 'admin_update' %}" method="post">
+            {% csrf_token %}
+    <div class="update">
+        <input class="block" type="submit" value="Update page"/>
+    </div>
+</form>
+<form action="{% url 'dump' %}" method="post">
+            {% csrf_token %}
+    <div class="dump">
+        <input class="block" type="submit" value="GAMES AND STADIUMS LOAD XML"/>
+    </div>
+</form>
+
+<form action="{% url 'search_word' %}" method="post">
+            {% csrf_token %}
+        <span><h2>Enter word to FULLTEXT find(stadium adress):</h2></span>
+    <input class="block" type="text" name="word" placeholder="Vatutina" required ></br>
+     <div class="layer">
+         {% for choice in form5 %}
+                            {{ choice.adress }}
+
+            {% endfor %}
+    </div>
+        <input class="block" type="submit" value="Find!"/>
+
+</form>
+<form action="{% url 'search_string' %}" method="post">
+            {% csrf_token %}
+        <span><h2>Enter string to FULLTEXT find(stadium adress):</h2></span>
+    <input class="block" type="text" name="string" placeholder="Vatutina 10" required ></br>
+     <div class="layer">
+         {% for choice in form6 %}
+             {{ choice.adress }}
+
+            {% endfor %}
+    </div>
+        <input class="block" type="submit" value="Find!"/>
+</form>
+</div>
+</body>
+</html>

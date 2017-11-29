@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .central{
+            text-align:center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="central">
+
+         <form action="{% url 'insert_post' %}" method="post">
+            {% csrf_token %}
+        <div>
+            <span><h1>Buy a ticket!</h1></span></br>
+        </div>
+        <div>
+            <span>Enter your name: </span>
+        </div>
+        <input class="block" type="text" name="name_insert" placeholder="Name" required ></br>
+         </br>
+        <div>
+            <span>Enter your surname : </span>
+        </div>
+
+        <input class="block" type="text" name="surname_insert" placeholder="Surname" required></br>
+         </br>
+        <div>
+             <span>Enter your phone number: </span>
+        </div>
+
+        <input class="block" type="number" name="number_insert" placeholder="number" required></br>
+         </br>
+            <span>Are you vip?:  </span>
+        <input class="block" type="checkbox" value="True" name="vip_insert" ></br>
+         </br>
+             <span>Please, choose Game:  </span>
+            <select name="dropdown1">
+                {% for choice in form.my_choice_field.field.choices %}
+                    <option value = {{ choice.game_id }}>
+                            {{ choice.team1_team2 }}: {{ choice.game_data_time }}for {{ choice.ticket_price }}$
+                    </option>
+            {% endfor %}
+            </select></br>
+         </br>
+            <input class="block" type="submit" value="Buy!"/></br>
+
+
+        </form>
+    </div>
+</body>
+</html>
