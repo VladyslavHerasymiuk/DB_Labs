@@ -1,15 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.urls import reverse
-from django.views.generic import TemplateView
-
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from lab2_App.database import Database
 from lab2_App.forms import *
 
 db = Database()
+db1 = DatabaseORM()
 
 
 def index(request):
@@ -43,11 +38,13 @@ def insert_post(request):
             VIP = 'true'
         else:
             VIP = 'false'
-        db.add_customer(name, surname, number, VIP)
-        db.add_fact(name, surname, game_id)
+
+        db1.add_customer(name, surname, number, VIP)
+        db1.add_fact(name, surname, game_id)
         return HttpResponseRedirect("/")
     except:
         return render(request, "error_page.html")
+
 
 
 def post_admin_add(request):
@@ -57,12 +54,12 @@ def post_admin_add(request):
     price = request.POST.get('price')
     stadium_id = request.POST.get('dropdown2')
     teams = team1 + '-' + team2
-    db.add_game(teams, stadium_id, datetime, price)
+    db1.add_game(teams, stadium_id, datetime, price)
     return HttpResponseRedirect(reverse('insert_admin'))
 
 def post_admin_del(request):
     game_id = request.POST.get('dropdown3')
-    db.del_game(game_id)
+    db1.del_game(game_id)
     return HttpResponseRedirect(reverse('insert_admin'))
 
 def post_admin_edit(request):
@@ -70,7 +67,7 @@ def post_admin_edit(request):
     stadium_id = request.POST.get('dropdown5')
     price = request.POST.get('price')
     datetime = request.POST.get('datetime')
-    db.edit_game(game_id, stadium_id, datetime, price)
+    db1.edit_game(game_id, stadium_id, datetime, price)
     return HttpResponseRedirect(reverse('insert_admin'))
 
 def post_admin_search(request):

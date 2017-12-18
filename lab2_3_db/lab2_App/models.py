@@ -9,27 +9,21 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-
 class Customer(models.Model):
-    cust_id = models.IntegerField(primary_key=True)
+    cust_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
-    phone_number = models.CharField(max_length=11)
-    vip = models.IntegerField(db_column='VIP')  # Field name made lowercase.
+    phone_number = models.CharField(max_length=13)
+    vip = models.CharField(db_column='VIP', max_length=6)  # Field name made lowercase.
+
 
     class Meta:
         managed = False
         db_table = 'customer'
+        unique_together = (('cust_id', 'name', 'surname'),)
 
-
-class DjangoMigrations(models.Model):
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
+    def __str__(self):
+        return '{}'.format(self.cust_id)
 
 
 class Facts(models.Model):
@@ -44,9 +38,8 @@ class Facts(models.Model):
 
 
 class Games(models.Model):
-    game_id = models.IntegerField(primary_key=True)
-    team1_name = models.CharField(max_length=20)
-    team2_name = models.CharField(max_length=20)
+    game_id = models.AutoField(primary_key=True)
+    team1_team2 = models.CharField(max_length=50)
     stadium = models.ForeignKey('Stadiums', models.DO_NOTHING)
     game_data_time = models.DateTimeField()
     ticket_price = models.IntegerField()
@@ -57,13 +50,13 @@ class Games(models.Model):
 
 
 class Stadiums(models.Model):
-    stadium_id = models.IntegerField(primary_key=True)
+    stadium_id = models.AutoField(primary_key=True)
     stadium_name = models.CharField(max_length=20)
     adress = models.CharField(max_length=20)
-    phone_number = models.CharField(max_length=11)
+    phone_number = models.CharField(max_length=13)
+
 
     class Meta:
         managed = False
         db_table = 'stadiums'
-
 

@@ -21,6 +21,7 @@ class Database:
                 self.connect().rollback()
 
 
+
     '''def create(self):
         if not self.con and not self.con.open:
             self.connect()
@@ -93,13 +94,6 @@ class Database:
             cust_id = cur.fetchall()
             cur.execute("INSERT INTO facts(cust_id,game_id,sell_data_time) VALUES('%s','%s',now())" % (cust_id[0][0], game_id))
 
-    def del_game(self, g_id):
-        if not self.con:
-            self.connect()
-        with self.con:
-            cur = self.con.cursor()
-            cur.execute("DELETE facts, customer FROM facts INNER JOIN customer on customer.cust_id = facts.cust_id where facts.cust_id in (select * from ( select cust_id from facts  where facts.game_id = '%s') as f)" % g_id)
-            cur.execute("delete from games WHERE game_id = '%s'" % (g_id))
 
     def edit_game(self, game_id, stadium_id, datatime, price):
         if not self.con:
@@ -113,7 +107,7 @@ class Database:
             self.connect()
         with self.con:
             cur = self.con.cursor(mdb.cursors.DictCursor)
-            cur.execute("select team1_team2 from games where (ticket_price > '%s') and (ticket_price<'%s')" % (froms,to))
+            cur.execute("select team1_team2 from games where (ticket_price >= '%s') and (ticket_price <='%s')" % (froms,to))
             rows = cur.fetchall()
             return rows
 

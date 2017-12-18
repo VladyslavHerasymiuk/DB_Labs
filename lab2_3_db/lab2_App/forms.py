@@ -1,6 +1,9 @@
 from django import forms
 from lab2_App.database import Database
-db = Database()
+from lab2_App.databaseORM import DatabaseORM
+
+
+db = DatabaseORM()
 
 class Form_game(forms.Form):
     my_choice_field = forms.ChoiceField(choices=db.select_games)
